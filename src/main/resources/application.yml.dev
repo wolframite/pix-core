@@ -1,0 +1,13 @@
+---
+routes:
+  ReceiveMails:
+    imapConnection: "imaps://test%40example.com@imap.example.com?password=secret&consumer.delay=30000&copyTo=Archive&delete=true"
+
+aws:
+  accessKey: AABBJZ12LOXZ1AWRR9OP
+  secretKey: ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ABCD
+  region: eu-central-1
+
+camel:
+  springboot:
+    main-run-controller: true

@@ -47,6 +47,8 @@ public class MailProcessor implements Processor {
         exchange.getIn().setHeader(S3Constants.KEY, getHexString(MessageDigest.getInstance("MD5").digest(data)));
         exchange.getIn().setHeader(S3Constants.CONTENT_LENGTH, data.length);
 
+        // Store original Body
+        exchange.getIn().setHeader("OriginalMailBody", exchange.getIn().getBody());
         exchange.getIn().setBody(exchange.getContext().getTypeConverter().convertTo(
             byte[].class, image.getInputStream()
         ));
@@ -98,6 +100,7 @@ public class MailProcessor implements Processor {
         }
 
         if (attachments.containsKey(name)) {
+            exchange.getIn().setHeader("OriginalName", name);
             return attachments.get(name);
         }
 

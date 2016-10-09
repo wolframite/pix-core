@@ -7,7 +7,17 @@ aws:
   accessKey: AABBJZ12LOXZ1AWRR9OP
   secretKey: ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ABCD
   region: eu-central-1
+  bucketName: "bucketeer"
 
 camel:
   springboot:
     main-run-controller: true
+
+spring:
+  jpa:
+    show_sql: true
+    generate-ddl: true
+  datasource:
+    url: jdbc:mysql://localhost/pix
+    username: root
+    password:

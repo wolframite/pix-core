@@ -37,10 +37,10 @@ public class ReceiveMails extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
-        from("{{routes.ReceiveMails.imapConnection}}").autoStartup(enabled)
+        from("{{routes.ReceiveMails.imapConnection}}").autoStartup(enabled).id("ReceiveMails")
             .process(mailProcessor)
             .filter(body().isNotNull())
-            .log("Uploading image from ${in.header.From} to S3")
+            .log("Uploading image of ${in.header.From} to S3")
             .to("aws-s3://{{aws.bucketName}}?amazonS3Client=#client&region={{aws.region}}")
             .setBody(header("OriginalMailBody")).convertBodyTo(String.class)
             .process(persistenceProcessor)

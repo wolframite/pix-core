@@ -1,6 +1,8 @@
 package org.m18.pix.processors;
 
 import java.util.Map;
+
+import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.*;
 import java.io.IOException;
 import java.security.MessageDigest;
@@ -11,6 +13,7 @@ import org.apache.camel.component.aws.s3.S3Constants;
  * Extract biggest image from attachments and set the stream as the body for S3
  * @author Wolfram Huesken <woh@m18.io>
  */
+@Slf4j
 @org.springframework.stereotype.Component
 public class MailProcessor implements Processor {
 
@@ -18,10 +21,13 @@ public class MailProcessor implements Processor {
     public void process(Exchange exchange) throws Exception {
         Map<String, DataHandler> attachments = exchange.getIn().getAttachments();
         String subject = exchange.getIn().getHeader("Subject", String.class);
+        String sender = exchange.getIn().getHeader("From", String.class);
 
-        if (exchange.getIn().getHeader("From", String.class) == null) {
+        if (sender == null) {
             throw new RuntimeException("No sender found... Weird!");
         }
+
+        log.info("New Mail from " + sender);
 
         if (subject == null || subject.equals("")) {
             subject = "[ Bildermaschine ]";

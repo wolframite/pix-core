@@ -2,6 +2,7 @@
 routes:
   ReceiveMails:
     imapConnection: "imaps://test%40example.com@imap.example.com?password=secret&consumer.delay=30000&copyTo=Archive&delete=true"
+    enabled: true
 
 aws:
   accessKey: AABBJZ12LOXZ1AWRR9OP

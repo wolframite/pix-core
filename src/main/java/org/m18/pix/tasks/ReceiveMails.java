@@ -23,6 +23,9 @@ public class ReceiveMails extends RouteBuilder {
     @Value("${aws.secretKey}")
     private String secretKey;
 
+    @Value("${routes.ReceiveMails.enabled}")
+    private boolean enabled;
+
     MailProcessor mailProcessor;
     PersistenceProcessor persistenceProcessor;
 
@@ -34,10 +37,10 @@ public class ReceiveMails extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
-        from("{{routes.ReceiveMails.imapConnection}}")
+        from("{{routes.ReceiveMails.imapConnection}}").autoStartup(enabled)
             .process(mailProcessor)
             .filter(body().isNotNull())
-            .to("log:upload?showHeaders=true")
+            .log("Uploading image from ${in.header.From} to S3")
             .to("aws-s3://{{aws.bucketName}}?amazonS3Client=#client&region={{aws.region}}")
             .setBody(header("OriginalMailBody")).convertBodyTo(String.class)
             .process(persistenceProcessor)
@@ -49,4 +52,5 @@ public class ReceiveMails extends RouteBuilder {
         AWSCredentials awsCredentials = new BasicAWSCredentials(accessKey, secretKey);
         return new AmazonS3Client(awsCredentials);
     }
+
 }

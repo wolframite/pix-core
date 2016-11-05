@@ -44,4 +44,5 @@ public class Image {
 
     @Column(name = "created_at", columnDefinition = "DATETIME DEFAULT NOW()", insertable = false, updatable = false)
     private Date createdAt;
+
 }

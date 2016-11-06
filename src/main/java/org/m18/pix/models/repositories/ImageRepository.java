@@ -1,8 +1,8 @@
 package org.m18.pix.models.repositories;
 
 import javax.transaction.Transactional;
+
 import org.m18.pix.models.entities.Image;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Component;
 
 /**
@@ -10,4 +10,5 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Transactional(rollbackOn = Exception.class)
-public interface ImageRepository extends PagingAndSortingRepository<Image, Long> {}
+public interface ImageRepository extends ReadOnlyRepository<Image, Long> {
+}

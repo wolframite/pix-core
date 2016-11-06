@@ -1,5 +1,6 @@
 package org.m18.pix.processors;
 
+import java.awt.image.BufferedImage;
 import java.util.Map;
 
 import lombok.extern.slf4j.Slf4j;
@@ -7,6 +8,8 @@ import org.apache.camel.*;
 import java.io.IOException;
 import java.security.MessageDigest;
 import javax.activation.DataHandler;
+import javax.imageio.ImageIO;
+
 import org.apache.camel.component.aws.s3.S3Constants;
 
 /**
@@ -50,6 +53,12 @@ public class MailProcessor implements Processor {
             image.getInputStream()
         );
 
+        // Set Image Dimensions
+        BufferedImage bufferedImage = ImageIO.read(image.getInputStream());
+        exchange.getIn().setHeader("ImageWidth", bufferedImage.getWidth());
+        exchange.getIn().setHeader("ImageHeight", bufferedImage.getHeight());
+
+        // Prepare S3 Metadata
         exchange.getIn().setHeader(S3Constants.KEY, getHexString(MessageDigest.getInstance("MD5").digest(data)));
         exchange.getIn().setHeader(S3Constants.CONTENT_LENGTH, data.length);
 

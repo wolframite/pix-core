@@ -30,6 +30,9 @@ public class PersistenceProcessor implements Processor {
         image.setSenderEmail(address.getAddress());
         image.setSenderName(address.getPersonal());
 
+        image.setWidth(exchange.getIn().getHeader("ImageWidth", Integer.class));
+        image.setHeight(exchange.getIn().getHeader("ImageHeight", Integer.class));
+
         image.setDescription(removeHtmlTags(exchange.getIn().getBody(String.class).trim()));
         image.setTitle(removeHtmlTags(MimeUtility.decodeText(exchange.getIn().getHeader("Subject", String.class))));
 

@@ -42,6 +42,12 @@ public class Image {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @Column
+    private Integer height;
+
+    @Column
+    private Integer width;
+
     @Column(name = "created_at", columnDefinition = "DATETIME DEFAULT NOW()", insertable = false, updatable = false)
     private Date createdAt;
 
